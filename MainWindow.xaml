@@ -1,0 +1,369 @@
+﻿<Window x:Class="RocketLeagueCounter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Width="260"
+        Height="230"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+
+    <Border Background="#F0000000"
+            CornerRadius="12"
+            Padding="10"
+            BorderBrush="#444444"
+            BorderThickness="1">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+<!-- STREAK VITTORIE / SCONFITTE -->
+<StackPanel x:Name="StreakPanel"
+            Orientation="Horizontal"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Margin="2,0,0,0"
+            Panel.ZIndex="10">
+
+    <!-- Fiammella disegnata con testo Unicode -->
+    <TextBlock Text="🔥"
+               FontSize="16"
+               VerticalAlignment="Center"
+               Margin="0,0,3,0"/>
+
+    <!-- Numero della streak -->
+    <TextBlock x:Name="StreakText"
+               Text="0"
+               Foreground="#888888"
+               FontSize="16"
+               FontWeight="Bold"
+               VerticalAlignment="Center"/>
+</StackPanel>
+
+            <!-- RIDUZIONE / RIPRISTINO -->
+<Button x:Name="CompactButton"
+        Content="&#x2212;"
+        Width="22"
+        Height="22"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Top"
+        Margin="0,-5,22,0"
+        Background="#444444"
+        Foreground="White"
+        BorderThickness="0"
+        FontSize="16"
+        FontWeight="Bold"
+        ToolTip="Riduci o ripristina"
+        Click="CompactButton_Click"/>
+
+<!-- CHIUSURA -->
+<Button Content="&#x00D7;"
+        Width="22"
+        Height="22"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Top"
+        Margin="0,-5,-5,0"
+        Background="#D9363E"
+        Foreground="White"
+        BorderThickness="0"
+        FontSize="16"
+        FontWeight="Bold"
+        Click="CloseButton_Click"/>
+
+            <!-- INTESTAZIONE E OROLOGIO -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,5">
+                      <TextBlock x:Name="AuthorText"
+           Text="Progettato da BryTop"                    
+                           Foreground="White"
+                           FontSize="10"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"/>
+
+                <TextBlock x:Name="ClockText"
+                           Text="00:00:00"
+                           Foreground="White"
+                           FontSize="13"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- VITTORIE, RESET E SCONFITTE -->
+<StackPanel x:Name="CounterPanel"
+            Grid.Row="1"
+            Orientation="Horizontal"
+            HorizontalAlignment="Center"
+            Margin="0,0,0,7">
+
+    <!-- VITTORIE -->
+    <TextBlock x:Name="WinsText"
+               Text="W 0"
+               Foreground="#35E06F"
+               FontSize="25"
+               FontWeight="Bold"
+               Margin="0,0,4,0"/>
+
+    <Button x:Name="AddWinButton" Content="+"
+            Width="21"
+            Height="23"
+            VerticalAlignment="Center"
+            Background="#277D45"
+            Foreground="White"
+            BorderThickness="0"
+            FontSize="15"
+            FontWeight="Bold"
+            Margin="0,0,2,0"
+            ToolTip="Aggiungi una vittoria"
+            Click="AddWinButton_Click"/>
+
+    <Button x:Name="RemoveWinButton" Content="-"
+            Width="21"
+            Height="23"
+            VerticalAlignment="Center"
+            Background="#333333"
+            Foreground="White"
+            BorderBrush="#666666"
+            BorderThickness="1"
+            FontSize="15"
+            FontWeight="Bold"
+            Margin="0,0,7,0"
+            ToolTip="Rimuovi una vittoria"
+            Click="RemoveWinButton_Click"/>
+
+    <!-- RESET AL CENTRO -->
+    <Button x:Name="ResetButton" Content="&#x21BB;"
+            Width="27"
+            Height="27"
+            VerticalAlignment="Center"
+            Background="#444444"
+            Foreground="White"
+            BorderBrush="#777777"
+            BorderThickness="1"
+            FontSize="17"
+            FontWeight="Bold"
+            Margin="0,0,7,0"
+            ToolTip="Azzera vittorie e sconfitte"
+            Click="ResetCounterButton_Click"/>
+
+    <!-- SCONFITTE -->
+    <TextBlock x:Name="LossesText"
+               Text="L 0"
+               Foreground="#FF4D5A"
+               FontSize="25"
+               FontWeight="Bold"
+               Margin="0,0,4,0"/>
+
+    <Button x:Name="AddLossButton" Content="+"
+            Width="21"
+            Height="23"
+            VerticalAlignment="Center"
+            Background="#277D45"
+            Foreground="White"
+            BorderThickness="0"
+            FontSize="15"
+            FontWeight="Bold"
+            Margin="0,0,2,0"
+            ToolTip="Aggiungi una sconfitta"
+            Click="AddLossButton_Click"/>
+
+    <Button x:Name="RemoveLossButton" Content="-"
+            Width="21"
+            Height="23"
+            VerticalAlignment="Center"
+            Background="#333333"
+            Foreground="White"
+            BorderBrush="#666666"
+            BorderThickness="1"
+            FontSize="15"
+            FontWeight="Bold"
+            ToolTip="Rimuovi una sconfitta"
+            Click="RemoveLossButton_Click"/>
+
+</StackPanel>
+
+            <!-- SELEZIONE GIOCATORE -->
+            <StackPanel x:Name="PlayerPanel"
+            Grid.Row="2"
+            Margin="0,0,0,6">
+
+                <TextBlock Text="Il tuo giocatore"
+                           Foreground="White"
+                           FontSize="10"
+                           Margin="1,0,0,3"/>
+
+                <ComboBox x:Name="PlayerComboBox"
+                          Height="29"
+                          FontSize="12"
+                          Background="Black"
+                          Foreground="White"
+                          BorderBrush="#666666"
+                          BorderThickness="1"
+                          DisplayMemberPath="DisplayName"
+                          SelectionChanged="PlayerComboBox_SelectionChanged">
+
+                    <!-- BANNER PERSONALIZZATO NERO -->
+                    <ComboBox.Template>
+                        <ControlTemplate TargetType="{x:Type ComboBox}">
+                            <Grid>
+                                <ToggleButton x:Name="ToggleButton"
+                                              Focusable="False"
+                                              ClickMode="Press"
+                                              Background="Black"
+                                              Foreground="White"
+                                              BorderBrush="#666666"
+                                              BorderThickness="1"
+                                              IsChecked="{Binding IsDropDownOpen,
+                                                  Mode=TwoWay,
+                                                  RelativeSource={RelativeSource TemplatedParent}}">
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="24"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- NOME SELEZIONATO -->
+                                        <ContentPresenter
+                                            Grid.Column="0"
+                                            Margin="7,0,2,0"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Left"
+                                            Content="{TemplateBinding SelectionBoxItem}"
+                                            ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                            ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                            TextBlock.Foreground="White"/>
+
+                                        <!-- FRECCIA BIANCA -->
+                                        <Path Grid.Column="1"
+                                              Data="M 0 0 L 4 4 L 8 0 Z"
+                                              Fill="White"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                                    </Grid>
+                                </ToggleButton>
+
+                                <!-- MENU A DISCESA -->
+                                <Popup x:Name="Popup"
+                                       Placement="Bottom"
+                                       IsOpen="{TemplateBinding IsDropDownOpen}"
+                                       AllowsTransparency="True"
+                                       Focusable="False"
+                                       PopupAnimation="Fade">
+
+                                    <Border Background="Black"
+                                            BorderBrush="#666666"
+                                            BorderThickness="1"
+                                            MinWidth="{Binding ActualWidth,
+                                                RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}"
+                                            MaxHeight="{TemplateBinding MaxDropDownHeight}">
+
+                                        <ScrollViewer
+                                            CanContentScroll="True"
+                                            SnapsToDevicePixels="True">
+
+                                            <ItemsPresenter
+                                                KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                        </ScrollViewer>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="ToggleButton"
+                                            Property="Opacity"
+                                            Value="0.5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </ComboBox.Template>
+
+                    <!-- COLORI DELLE VOCI -->
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ComboBoxItem}">
+                            <Setter Property="Background" Value="Black"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Padding" Value="7,5"/>
+                            <Setter Property="HorizontalContentAlignment"
+                                    Value="Stretch"/>
+
+                            <Style.Triggers>
+                                <Trigger Property="IsHighlighted"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            Value="#333333"/>
+                                    <Setter Property="Foreground"
+                                            Value="White"/>
+                                </Trigger>
+
+                                <Trigger Property="IsSelected"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            Value="#444444"/>
+                                    <Setter Property="Foreground"
+                                            Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+
+                </ComboBox>
+            </StackPanel>
+
+            <!-- STATO CONNESSIONE -->
+            <StackPanel x:Name="StatusPanel"
+            Grid.Row="3"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,7">
+
+                <Ellipse x:Name="StatusDot"
+                         Width="9"
+                         Height="9"
+                         Fill="#888888"
+                         VerticalAlignment="Center"
+                         Margin="0,0,5,0"/>
+
+                <TextBlock x:Name="StatusText"
+                           Text="Seleziona il giocatore"
+                           Foreground="White"
+                           FontSize="12"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- CONNESSIONE -->
+                <StackPanel x:Name="ConnectionPanel"
+            Grid.Row="4">
+             <Button x:Name="ConnectButton"
+                        Content="Connect"
+                        Height="27"
+                        Background="#277D45"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        FontSize="11"
+                        BorderThickness="0"
+                        Click="ConnectButton_Click"/>
+
+                <Button Content="Rank Lobby"
+                        Height="25"
+                        Margin="0,5,0,0"
+                        Background="#333333"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        FontSize="11"
+                        BorderBrush="#666666"
+                        BorderThickness="1"
+                        Click="OpenLobbyRanksButton_Click"/>
+            </StackPanel>     
+  </Grid>
+    </Border>
+</Window>
